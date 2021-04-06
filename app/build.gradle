@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "timeline.lizimumu.com.t"
+        applicationId "nl.romanpeters.screenless"
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 29

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
-    <string name="app_name">AppsMonitor</string>
+    <string name="app_name">Screenless</string>
 
     <string name="close">Close</string>
 
@@ -12,7 +12,7 @@
     <string name="enable_apps_monitor">Enable apps monitor</string>
     <string name="enable_apps_monitoring">Apps monitoring</string>
 
-    <string name="feedback">feedback: zhishoumowen@gmail.com</string>
+    <string name="feedback">r.peters1@students.uu.nl</string>
 
     <string name="grant_success">Grand permission successfully</string>
 

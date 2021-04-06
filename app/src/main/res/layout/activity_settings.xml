@@ -93,22 +93,22 @@
         android:text="@string/settings_more"
         android:textSize="14sp" />
 
-    <RelativeLayout
-        android:id="@+id/group_share"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/bg_settings_item"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/group_share"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:background="@drawable/bg_settings_item"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:paddingStart="16dp">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/share"
-            android:textSize="16sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:text="@string/share"-->
+<!--            android:textSize="16sp" />-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/group_about"
