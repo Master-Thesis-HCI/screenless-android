@@ -3,7 +3,6 @@ package timeline.lizimumu.com.screenless.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import timeline.lizimumu.com.screenless.AppConst;
 import nl.romanpeters.screenless.BuildConfig;
@@ -28,21 +28,13 @@ import timeline.lizimumu.com.screenless.db.DbIgnoreExecutor;
 import timeline.lizimumu.com.screenless.service.AppService;
 import timeline.lizimumu.com.screenless.util.CrashHandler;
 import timeline.lizimumu.com.screenless.util.PreferenceManager;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import org.json.*;
+
 /**
  * My Application
  * Created by zb on 18/12/2017.
  */
 
 public class MyApplication extends Application {
-
-
 
     @Override
     public void onCreate() {
@@ -54,10 +46,24 @@ public class MyApplication extends Application {
         DataManager.init();
         addDefaultIgnoreAppsToDB();
 
+        Timer timerObj = new Timer();
+
+
+
+        TimerTask timerTaskObj = new TimerTask() {
+            public void run() {
+                MyApplication.volleyPost(getData(0, 99), getApplicationContext());
+            }
+        };
+
+        timerObj.schedule(timerTaskObj, 0, 300000); // each 5 minutes
+
         if (AppConst.CRASH_TO_FILE) CrashHandler.getInstance().init();
     }
 
-
+    protected String getData(Integer... integers) {
+        return DataManager.getInstance().getApps(getApplicationContext(), integers[0], integers[1]).toString();
+    }
 
     private void addDefaultIgnoreAppsToDB() {
         new Thread(new Runnable() {
@@ -76,8 +82,8 @@ public class MyApplication extends Application {
         }).run();
     }
 
-    public static void volleyPost(int screentime, Context context){
-        String postUrl = "https://screenless.romanpeters.nl/api/test";  //TODO
+    public static void volleyPost(String screentime, Context context){
+        String postUrl = "https://thesis.romanpeters.nl/api/id1234/";  //TODO
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         JSONObject postData = new JSONObject();

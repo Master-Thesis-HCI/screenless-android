@@ -219,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
             int sortInt = PreferenceManager.getInstance().getInt(PreferenceManager.PREF_LIST_SORT);
             mSortName.setText(getSortName(sortInt));
             new MyAsyncTask().execute(sortInt, mDay);
-            MyApplication.volleyPost(mDay, this);
         }
     }
 
@@ -284,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         if (mDialog != null) mDialog.dismiss();
     }
 
-    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         private List<AppItem> mData;
 
@@ -304,6 +303,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+
+
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

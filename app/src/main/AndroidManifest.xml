@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
 
+
     <application
         android:name="timeline.lizimumu.com.screenless.app.MyApplication"
         android:allowBackup="true"
@@ -86,5 +87,4 @@
             android:value="ca-app-pub-4824796006151671~9051058743"/>
 
     </application>
-
 </manifest>
