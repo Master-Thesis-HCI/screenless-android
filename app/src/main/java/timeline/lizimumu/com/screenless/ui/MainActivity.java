@@ -47,6 +47,7 @@ import java.util.Locale;
 
 import timeline.lizimumu.com.screenless.GlideApp;
 import nl.romanpeters.screenless.R;
+import timeline.lizimumu.com.screenless.app.MyApplication;
 import timeline.lizimumu.com.screenless.data.AppItem;
 import timeline.lizimumu.com.screenless.data.DataManager;
 import timeline.lizimumu.com.screenless.db.DbIgnoreExecutor;
@@ -218,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             int sortInt = PreferenceManager.getInstance().getInt(PreferenceManager.PREF_LIST_SORT);
             mSortName.setText(getSortName(sortInt));
             new MyAsyncTask().execute(sortInt, mDay);
+            MyApplication.volleyPost(mDay, this);
         }
     }
 

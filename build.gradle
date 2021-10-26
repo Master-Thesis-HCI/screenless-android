@@ -1,5 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+//implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+//implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+//implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+//implementation 'com.android.volley:volley:1.1.1'
+
+
+
+
 buildscript {
     
     repositories {
@@ -7,7 +15,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:7.0.2'
         classpath 'com.google.gms:google-services:4.3.3'
 
 

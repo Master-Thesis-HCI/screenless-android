@@ -1,10 +1,23 @@
 package timeline.lizimumu.com.screenless.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import timeline.lizimumu.com.screenless.AppConst;
 import nl.romanpeters.screenless.BuildConfig;
@@ -15,13 +28,21 @@ import timeline.lizimumu.com.screenless.db.DbIgnoreExecutor;
 import timeline.lizimumu.com.screenless.service.AppService;
 import timeline.lizimumu.com.screenless.util.CrashHandler;
 import timeline.lizimumu.com.screenless.util.PreferenceManager;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import org.json.*;
 /**
  * My Application
  * Created by zb on 18/12/2017.
  */
 
 public class MyApplication extends Application {
+
+
 
     @Override
     public void onCreate() {
@@ -32,8 +53,11 @@ public class MyApplication extends Application {
         DbHistoryExecutor.init(getApplicationContext());
         DataManager.init();
         addDefaultIgnoreAppsToDB();
+
         if (AppConst.CRASH_TO_FILE) CrashHandler.getInstance().init();
     }
+
+
 
     private void addDefaultIgnoreAppsToDB() {
         new Thread(new Runnable() {
@@ -51,4 +75,33 @@ public class MyApplication extends Application {
             }
         }).run();
     }
+
+    public static void volleyPost(int screentime, Context context){
+        String postUrl = "https://screenless.romanpeters.nl/api/test";  //TODO
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("screentime", screentime);  //TODO
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+
+    }
 }
+

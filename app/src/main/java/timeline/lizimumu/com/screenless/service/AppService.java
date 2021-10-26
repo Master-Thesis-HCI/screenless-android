@@ -79,6 +79,8 @@ public class AppService extends Service {
 
     private void startIntervalCheck() {
         boolean valid = true;
+
+
         try {
             mManager.requestPermission(mContext);
         } catch (ActivityNotFoundException e) {
