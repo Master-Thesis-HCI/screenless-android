@@ -3,6 +3,7 @@ package timeline.lizimumu.com.screenless.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -83,7 +84,9 @@ public class MyApplication extends Application {
     }
 
     public static void volleyPost(String screentime, Context context){
-        String postUrl = "https://thesis.romanpeters.nl/api/id1234/";  //TODO
+        String android_id = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        String postUrl = "https://thesis.romanpeters.nl/api/"+android_id+"/";
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         JSONObject postData = new JSONObject();
