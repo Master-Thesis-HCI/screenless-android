@@ -47,7 +47,6 @@ import java.util.Locale;
 
 import timeline.lizimumu.com.screenless.GlideApp;
 import nl.romanpeters.screenless.R;
-import timeline.lizimumu.com.screenless.app.MyApplication;
 import timeline.lizimumu.com.screenless.data.AppItem;
 import timeline.lizimumu.com.screenless.data.DataManager;
 import timeline.lizimumu.com.screenless.db.DbIgnoreExecutor;
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         initEvents();
         initSpinner();
         initSort();
+
 
         if (DataManager.getInstance().hasPermission(getApplicationContext())) {
             process();

@@ -1,24 +1,13 @@
 package timeline.lizimumu.com.screenless.app;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.work.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import timeline.lizimumu.com.screenless.AppConst;
 import nl.romanpeters.screenless.BuildConfig;
@@ -27,6 +16,7 @@ import timeline.lizimumu.com.screenless.data.DataManager;
 import timeline.lizimumu.com.screenless.db.DbHistoryExecutor;
 import timeline.lizimumu.com.screenless.db.DbIgnoreExecutor;
 import timeline.lizimumu.com.screenless.service.AppService;
+import timeline.lizimumu.com.screenless.workers.UploadWorker;
 import timeline.lizimumu.com.screenless.util.CrashHandler;
 import timeline.lizimumu.com.screenless.util.PreferenceManager;
 
@@ -47,24 +37,60 @@ public class MyApplication extends Application {
         DataManager.init();
         addDefaultIgnoreAppsToDB();
 
-        Timer timerObj = new Timer();
+        /** Create a background task which calls MyApplication.volleyPost(getData(0,99), getApplicationContext()) every 5 minutes */
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        PeriodicWorkRequest uploadWorkRequest = new PeriodicWorkRequest.Builder(UploadWorker.class, 1, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(uploadWorkRequest);
 
 
 
-        TimerTask timerTaskObj = new TimerTask() {
-            public void run() {
-                MyApplication.volleyPost(getData(0, 99), getApplicationContext());
-            }
-        };
 
-        timerObj.schedule(timerTaskObj, 0, 300000); // each 5 minutes
+//        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(uploadWorkRequest.getId()).observe((LifecycleOwner) this, workInfo -> {
+//            if (workInfo != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+//                // print the result
+//                System.out.println("Work finished");
+//            }
+//        });
+
+
+//
+//        Timer timerObj = new Timer();
+//
+//
+//
+//        TimerTask timerTaskObj = new TimerTask() {
+//            public void run() {
+//                System.out.println("triggered from TimerTask.run()");
+//                VolleyPost.volleyPost(DataManager.getData(0, 99), getApplicationContext());
+//            }
+//        };
+//
+//        timerObj.schedule(timerTaskObj, 0, 30000); // each 5 minutes
+
+//        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(uploadWorkRequest.getId()).observe((LifecycleOwner) this, workInfo -> {
+//            if (workInfo != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+//                // print the result
+//                System.out.println("Work finished");
+//            }
+//        });
+
+
+//        WorkManager.getInstance(...)
+//    .beginWith(Arrays.asList(workA, workB))
+//                .then(workC)
+//                .enqueue();
+
 
         if (AppConst.CRASH_TO_FILE) CrashHandler.getInstance().init();
     }
 
-    protected String getData(Integer... integers) {
-        return DataManager.getInstance().getApps(getApplicationContext(), integers[0], integers[1]).toString();
-    }
+
+
+
 
     private void addDefaultIgnoreAppsToDB() {
         new Thread(new Runnable() {
@@ -82,35 +108,6 @@ public class MyApplication extends Application {
             }
         }).run();
     }
-
-    public static void volleyPost(String screentime, Context context){
-        String android_id = Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        String postUrl = "https://thesis.romanpeters.nl/api/"+android_id+"/";
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("screentime", screentime);  //TODO
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        requestQueue.add(jsonObjectRequest);
-
-    }
 }
+
 
